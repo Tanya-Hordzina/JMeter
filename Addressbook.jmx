@@ -13,9 +13,9 @@
     </TestPlan>
     <hashTree>
       <RandomVariableConfig guiclass="TestBeanGUI" testclass="RandomVariableConfig" testname="Random Variable" enabled="true">
-        <stringProp name="maximumValue">99999999</stringProp>
+        <stringProp name="maximumValue">999</stringProp>
         <stringProp name="minimumValue">1</stringProp>
-        <stringProp name="outputFormat">00000000</stringProp>
+        <stringProp name="outputFormat">000</stringProp>
         <boolProp name="perThread">false</boolProp>
         <stringProp name="randomSeed"></stringProp>
         <stringProp name="variableName">random_value</stringProp>
@@ -33,7 +33,7 @@
           <boolProp name="LoopController.continue_forever">false</boolProp>
           <stringProp name="LoopController.loops">1</stringProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">5</stringProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
         <stringProp name="ThreadGroup.duration"></stringProp>
@@ -261,14 +261,14 @@
               <collectionProp name="Arguments.arguments">
                 <elementProp name="firstname" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">Test</stringProp>
+                  <stringProp name="Argument.value">Test+${random_value}</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                   <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   <stringProp name="Argument.name">firstname</stringProp>
                 </elementProp>
                 <elementProp name="lastname" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">User</stringProp>
+                  <stringProp name="Argument.value">User+${random_value}</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                   <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   <stringProp name="Argument.name">lastname</stringProp>
@@ -322,18 +322,19 @@
             <stringProp name="HTTPSampler.connect_timeout"></stringProp>
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
-          <hashTree/>
+          <hashTree>
+            <HtmlExtractor guiclass="HtmlExtractorGui" testclass="HtmlExtractor" testname="Get Contact ID" enabled="true">
+              <stringProp name="HtmlExtractor.refname">contact_id</stringProp>
+              <stringProp name="HtmlExtractor.expr">input[accept=&quot;myaddress+${random_value}@test.com&quot;]</stringProp>
+              <stringProp name="HtmlExtractor.attribute">id</stringProp>
+              <stringProp name="HtmlExtractor.default"></stringProp>
+              <boolProp name="HtmlExtractor.default_empty_value">false</boolProp>
+              <stringProp name="HtmlExtractor.match_number"></stringProp>
+              <stringProp name="HtmlExtractor.extractor_impl"></stringProp>
+            </HtmlExtractor>
+            <hashTree/>
+          </hashTree>
         </hashTree>
-        <HtmlExtractor guiclass="HtmlExtractorGui" testclass="HtmlExtractor" testname="Get Contact ID" enabled="true">
-          <stringProp name="HtmlExtractor.refname">contact_id</stringProp>
-          <stringProp name="HtmlExtractor.expr">input[accept=&quot;myaddress+${random_value}@test.com&quot;]</stringProp>
-          <stringProp name="HtmlExtractor.attribute">id</stringProp>
-          <stringProp name="HtmlExtractor.default"></stringProp>
-          <boolProp name="HtmlExtractor.default_empty_value">false</boolProp>
-          <stringProp name="HtmlExtractor.match_number"></stringProp>
-          <stringProp name="HtmlExtractor.extractor_impl"></stringProp>
-        </HtmlExtractor>
-        <hashTree/>
         <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Add the contact to the group " enabled="true">
           <boolProp name="TransactionController.includeTimers">false</boolProp>
           <boolProp name="TransactionController.parent">false</boolProp>
@@ -424,19 +425,12 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree/>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Click on the [Refresh]" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Click on the [update] button" enabled="true">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
               <collectionProp name="Arguments.arguments">
-                <elementProp name="id" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">${contact_id}</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">id</stringProp>
-                </elementProp>
                 <elementProp name="lastname" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">User_1</stringProp>
+                  <stringProp name="Argument.value">User+${random_value}_1</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                   <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   <stringProp name="Argument.name">lastname</stringProp>
@@ -450,10 +444,17 @@
                 </elementProp>
                 <elementProp name="update" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">Refresh</stringProp>
+                  <stringProp name="Argument.value">Update</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                   <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   <stringProp name="Argument.name">update</stringProp>
+                </elementProp>
+                <elementProp name="firstname" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">Test+${random_value}_1</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">firstname</stringProp>
                 </elementProp>
               </collectionProp>
             </elementProp>
@@ -546,7 +547,7 @@
               <collectionProp name="Arguments.arguments">
                 <elementProp name="delete" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">Delete group(s)</stringProp>
+                  <stringProp name="Argument.value">Delete group</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                   <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   <stringProp name="Argument.name">delete</stringProp>
@@ -664,6 +665,10 @@
           </objProp>
           <stringProp name="filename"></stringProp>
         </ResultCollector>
+        <hashTree/>
+        <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+          <stringProp name="ConstantTimer.delay">1</stringProp>
+        </ConstantTimer>
         <hashTree/>
       </hashTree>
     </hashTree>
